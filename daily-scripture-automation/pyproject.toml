@@ -18,7 +18,7 @@ dev = [
     "pytest-mock>=3.12",
     "responses>=0.25",
 ]
-gmail = ["google-auth>=2.29", "google-api-python-client>=2.126"]
+gmail = ["google-auth>=2.29", "google-api-python-client>=2.126", "google-auth-oauthlib>=1.2"]
 openai-tts = ["openai>=1.30"]
 openai-extraction = ["openai>=1.30"]
 browser-handoff = ["playwright>=1.44"]

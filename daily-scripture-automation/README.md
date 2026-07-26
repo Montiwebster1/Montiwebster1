@@ -96,14 +96,51 @@ any OAuth secret.
 
 ### Email (pick one)
 
-- **Gmail OAuth** (preferred): create an OAuth client in Google Cloud
-  Console (Desktop app type), obtain a refresh token via a one-time
-  authorization flow, and set `EMAIL_PROVIDER=gmail_oauth` plus
-  `GMAIL_CLIENT_ID` / `GMAIL_CLIENT_SECRET` / `GMAIL_REFRESH_TOKEN`.
+- **Gmail OAuth** (preferred — what this deployment uses): see
+  "Gmail OAuth setup" below for the full step-by-step.
 - **SMTP**: set `EMAIL_PROVIDER=smtp` plus `SMTP_HOST`, `SMTP_PORT`,
   `SMTP_USERNAME`, `SMTP_PASSWORD`, `EMAIL_FROM`. For Gmail SMTP, use an
   [App Password](https://myaccount.google.com/apppasswords), not your
   normal password.
+
+#### Gmail OAuth setup
+
+Run this on the machine that will actually run the 5 AM job — not a
+throwaway sandbox, since step 4 prints a long-lived secret.
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/) → create
+   a project (or pick an existing one) → **APIs & Services → Library** →
+   enable the **Gmail API**.
+2. **APIs & Services → OAuth consent screen** → choose **External** (unless
+   you have a Workspace org) → fill in the required app name/support email
+   → add your own Gmail address as a **Test user** (this keeps the app in
+   "Testing" mode, which is fine for personal use and doesn't require
+   Google review).
+3. **APIs & Services → Credentials → Create Credentials → OAuth client ID**
+   → Application type **Desktop app** → note the **Client ID** and
+   **Client Secret** it generates.
+4. Install the OAuth helper dependency and run the included script:
+   ```bash
+   pip install -e ".[gmail]"
+   python scripts/gmail_oauth_setup.py
+   ```
+   It asks for the Client ID/Secret from step 3, opens a browser for you to
+   sign in and approve "Send email on your behalf" (only the `gmail.send`
+   scope is requested — this never reads your mail), then prints the
+   `GMAIL_CLIENT_ID` / `GMAIL_CLIENT_SECRET` / `GMAIL_REFRESH_TOKEN` lines
+   to paste into `.env`, plus `EMAIL_PROVIDER=gmail_oauth`.
+5. Verify with a real send:
+   ```bash
+   daily-scripture run --date 2026-07-26 --dry-run   # confirms extraction+audio first
+   daily-scripture send-email --date 2026-07-26      # actually sends, needs prior audio from a non-dry run
+   ```
+   `send-email` only succeeds and reports a message ID once Gmail actually
+   confirms the send — it won't print success on a token/auth failure.
+
+If step 4 prints "No refresh token was returned," you've likely authorized
+this app before — revoke it at
+[myaccount.google.com/permissions](https://myaccount.google.com/permissions)
+and re-run the script so Google issues a fresh one.
 
 ### Text-to-speech (pick one, in priority order)
 
