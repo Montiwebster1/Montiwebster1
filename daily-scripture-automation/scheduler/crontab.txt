@@ -1,0 +1,10 @@
+# Daily Scripture Automation — cron fallback (use the systemd timer if available; see daily-scripture.timer)
+#
+# CRON_TZ makes cron evaluate this line's schedule in America/Chicago
+# regardless of the machine's system timezone, and correctly follows
+# CST/CDT daylight-saving shifts because CRON_TZ is a named zone, not a
+# fixed UTC offset. Supported by Vixie cron / cronie (most Linux distros).
+# If your cron does not support CRON_TZ, use the systemd timer instead —
+# it is the preferred option on Linux for exactly this reason.
+CRON_TZ=America/Chicago
+0 5 * * * cd /home/REPLACE_ME/Montiwebster1/daily-scripture-automation && ./.venv/bin/daily-scripture run >> logs/cron-stdout.log 2>> logs/cron-stderr.log

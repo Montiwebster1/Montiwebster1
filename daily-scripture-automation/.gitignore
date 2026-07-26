@@ -1,0 +1,16 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+
+# Generated at runtime — not source
+logs/*.log
+state/*.json
+output/audio/*
+output/text/*
+output/journal-handoff/*.md
+!output/audio/.gitkeep
+!output/text/.gitkeep
+!output/journal-handoff/.gitkeep

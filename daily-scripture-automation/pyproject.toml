@@ -1,0 +1,33 @@
+[project]
+name = "daily-scripture-automation"
+version = "1.0.0"
+description = "Fetches the daily scripture text, narrates it to audio, emails it, and hands it off to a journal project — every morning at 5:00 AM America/Chicago."
+requires-python = ">=3.11"
+dependencies = [
+    "requests>=2.31",
+    "beautifulsoup4>=4.12",
+    "lxml>=5.0",
+    "pyttsx3>=2.90",
+    "python-dotenv>=1.0",
+    "tzdata>=2024.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-mock>=3.12",
+    "responses>=0.25",
+]
+gmail = ["google-auth>=2.29", "google-api-python-client>=2.126"]
+openai-tts = ["openai>=1.30"]
+browser-handoff = ["playwright>=1.44"]
+
+[project.scripts]
+daily-scripture = "daily_scripture.main:cli"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
