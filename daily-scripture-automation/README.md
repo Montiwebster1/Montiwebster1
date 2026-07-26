@@ -39,6 +39,26 @@ email, journal handoff, state, tests) was fully built and tested in this
 session using a saved HTML fixture and does not depend on live network
 access.
 
+### ChatGPT extraction fallback
+
+Direct HTTP fetch + HTML parsing is always tried first — it's the least
+brittle method and the spec's preferred approach. If it fails (site
+structure changed, transient block, etc.) and `EXTRACTION_FALLBACK=openai`
+is set with an `OPENAI_API_KEY`, the automation asks ChatGPT (OpenAI
+Responses API with the `web_search` tool) to browse the same page, locate
+the matching date, and return the same fields under the same "verbatim, no
+summarizing" instruction — see `src/daily_scripture/openai_extract.py`.
+This is a fallback, not a replacement: if `EXTRACTION_FALLBACK` is unset,
+a direct-fetch failure still stops the run cleanly, as required.
+
+Outbound requests to `api.openai.com` were also blocked in this sandboxed
+build session, so this fallback path is implemented and unit-tested against
+a mocked OpenAI client (`tests/test_openai_extract.py`) but has not been
+exercised against the real API. Verify it the same way as the primary
+path — `daily-scripture test-extraction` with `EXTRACTION_FALLBACK=openai`
+set and the primary selectors temporarily broken (or just watch the log
+for "falling back to ChatGPT web-browsing extraction").
+
 ## Install
 
 ```bash

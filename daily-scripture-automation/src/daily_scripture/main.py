@@ -6,7 +6,7 @@ import logging
 import sys
 from datetime import date, datetime, timezone
 
-from . import clean_text, fetch, parse, state, tts, email_sender, journal
+from . import clean_text, fetch, parse, state, tts, email_sender, journal, openai_extract
 from .config import Config, ConfigError, load_config
 from .dates import today_in_chicago
 from .logging_setup import setup_logging
@@ -25,8 +25,25 @@ def _resolve_date(args) -> date:
 
 
 def _extract(cfg: Config, entry_date: date) -> parse.DailyEntry:
-    html = fetch.fetch_page(cfg.source_url)
-    entry = parse.find_daily_entry(html, entry_date)
+    """Direct HTTP fetch + HTML parse first (least brittle per spec). Only
+    falls back to asking ChatGPT to browse the page when that fails AND
+    EXTRACTION_FALLBACK=openai is configured — never silent, always logged.
+    """
+    try:
+        html = fetch.fetch_page(cfg.source_url)
+        entry = parse.find_daily_entry(html, entry_date)
+    except (fetch.FetchError, parse.ExtractionError) as direct_exc:
+        if (cfg.extraction.fallback_provider or "").lower().strip() != "openai":
+            raise
+        logger.warning(
+            "Direct fetch/parse failed (%s); falling back to ChatGPT web-browsing extraction.",
+            direct_exc,
+        )
+        entry = openai_extract.find_daily_entry_via_openai(
+            cfg.source_url, entry_date, cfg.extraction.openai_api_key
+        )
+        logger.info("Extraction via OpenAI fallback succeeded for %s.", entry_date)
+
     logger.info(
         "Extraction OK: date=%s citation=%r comments=%d",
         entry.entry_date, entry.theme_scripture_citation, entry.comment_count,

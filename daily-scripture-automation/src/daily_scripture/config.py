@@ -47,6 +47,12 @@ class TTSConfig:
 
 
 @dataclass
+class ExtractionConfig:
+    fallback_provider: str = ""  # "" | "openai"
+    openai_api_key: str = ""
+
+
+@dataclass
 class JournalConfig:
     handoff_method: str = "queue"
     project_name: str = "Journal - My Children"
@@ -60,6 +66,7 @@ class Config:
     email: EmailConfig = field(default_factory=EmailConfig)
     tts: TTSConfig = field(default_factory=TTSConfig)
     journal: JournalConfig = field(default_factory=JournalConfig)
+    extraction: ExtractionConfig = field(default_factory=ExtractionConfig)
     repo_root: Path = REPO_ROOT
 
     @property
@@ -123,6 +130,10 @@ def load_config(*, require_email: bool = False, require_tts: bool = False) -> Co
             handoff_method=os.environ.get("CHATGPT_HANDOFF_METHOD", "queue"),
             project_name=os.environ.get("CHATGPT_PROJECT_NAME", "Journal - My Children"),
             browser_profile_path=os.environ.get("CHATGPT_BROWSER_PROFILE_PATH", ""),
+        ),
+        extraction=ExtractionConfig(
+            fallback_provider=os.environ.get("EXTRACTION_FALLBACK", ""),
+            openai_api_key=os.environ.get("OPENAI_API_KEY", ""),
         ),
     )
 
