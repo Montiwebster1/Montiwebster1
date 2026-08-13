@@ -1,0 +1,12 @@
+[Unit]
+Description=Daily Scripture-to-Audio and Journal Automation
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/Montiwebster1/daily-scripture-automation
+Environment=TZ=America/Chicago
+ExecStart=%h/Montiwebster1/daily-scripture-automation/.venv/bin/daily-scripture run
+StandardOutput=append:%h/Montiwebster1/daily-scripture-automation/logs/systemd-stdout.log
+StandardError=append:%h/Montiwebster1/daily-scripture-automation/logs/systemd-stderr.log

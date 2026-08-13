@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.montiwebster.dailyscripture</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/REPLACE_ME/Montiwebster1/daily-scripture-automation/.venv/bin/daily-scripture</string>
+    <string>run</string>
+  </array>
+
+  <key>WorkingDirectory</key>
+  <string>/Users/REPLACE_ME/Montiwebster1/daily-scripture-automation</string>
+
+  <!--
+    launchd's StartCalendarInterval fires by the machine's *local* system
+    timezone, not a named zone. If this Mac is not set to America/Chicago,
+    set the TZ environment variable below AND confirm the Mac's System
+    Settings > General > Date & Time timezone matches, or the 5:00 AM
+    firing will be off. launchd does not do zone-aware scheduling the way
+    systemd's OnCalendar with a zone suffix does.
+  -->
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>TZ</key>
+    <string>America/Chicago</string>
+  </dict>
+
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key>
+    <integer>5</integer>
+    <key>Minute</key>
+    <integer>0</integer>
+  </dict>
+
+  <key>StandardOutPath</key>
+  <string>/Users/REPLACE_ME/Montiwebster1/daily-scripture-automation/logs/launchd-stdout.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/REPLACE_ME/Montiwebster1/daily-scripture-automation/logs/launchd-stderr.log</string>
+
+  <key>RunAtLoad</key>
+  <false/>
+</dict>
+</plist>

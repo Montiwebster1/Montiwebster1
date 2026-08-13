@@ -1,0 +1,13 @@
+[Unit]
+Description=Run Daily Scripture Automation at 5:00 AM America/Chicago
+
+[Timer]
+# OnCalendar interprets the time in the timezone set below, not the
+# machine's local timezone — this keeps 5:00 AM correct across the
+# CST/CDT daylight-saving transitions automatically.
+OnCalendar=*-*-* 05:00:00 America/Chicago
+Persistent=true
+Unit=daily-scripture.service
+
+[Install]
+WantedBy=timers.target
