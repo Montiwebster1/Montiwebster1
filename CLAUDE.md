@@ -1,47 +1,53 @@
 # CLAUDE.md
 
-This file provides guidance to AI assistants (including Claude) when working with this repository.
+This file guides AI assistants (including Claude) working in this repository. It doesn't hold task instructions itself — it points to the skill or file that does, so instructions live in one place and don't drift out of sync here.
 
 ## Repository Overview
 
 **Repository**: Montiwebster1/Montiwebster1
-**Status**: Newly initialized repository
 
-This repository is in its initial state. As the project develops, this file should be updated to reflect the codebase structure, conventions, and workflows.
+This repo holds cross-cutting guidance for Monti's work, not a codebase. There's no build, no tech stack, no app to run here — if that changes, document the actual structure and commands when they exist, rather than in the abstract.
 
-## Project Structure
+## Task Routing
 
-```
-Montiwebster1/
-├── CLAUDE.md          # AI assistant guidance (this file)
-└── .git/              # Git configuration
-```
+For each kind of task, use the skill below instead of improvising:
 
-## Development Guidelines
+**DBR engineering (plumbing design)**
+- RFIs, submittals, sketches, permit comments, coordination issues → `engineering-review`
+- Formal submittal compliance review against spec/drawings → `submittal-review`
+- Reading a plan set, letter, or contract for a plain-English brief → `pdf-summariser`
+- Project specs / SOWs → `spec-builder`
 
-### Getting Started
+**Wise AI Partners (automation/AI)**
+- Building or editing a skill → `skill-creator`
+- Building an MCP server → `mcp-builder`
+- Recurring/scheduled tasks → `loop`
+- Session review to improve skills/memory → `improve-system`
 
-1. Clone the repository
-2. Set up your development environment based on the chosen tech stack
-3. Update this CLAUDE.md as project structure evolves
+**Sagemont Congregation**
+- Announcements, resolutions, elder body letters, notices → `congregation-communications-drafter`
+- Talks and meeting parts → `talk-part-builder`
+- Meeting notes → action items → `meeting-to-action-items`
 
-### Git Workflow
+**Cross-cutting / general**
+- Spreadsheets (clean, build, fix) → `xlsx` / `clean-messy-spreadsheet`
+- Receipts and expense tracking → `organise-receipts-and-expenses`
+- Writing that should sound like Monti → `personal-voice` / `humanizer` / `voice-agent`
+- Messy, unstructured requests → `prompt-master`
+- Documents (Word/PDF/PPTX) → `docx` / `pdf` / `pptx`
+- End-of-session audit → `starter-session-audit`
 
-- Use descriptive commit messages
-- Keep commits focused and atomic
-- Push changes to feature branches, not directly to main
+If a task doesn't map to any of these, don't force-fit it — ask, or handle it directly and flag that it may be worth a new skill (`skill-creator`).
 
-### Goal Alignment & Safeguards
+## Git Workflow
+
+- Use descriptive, focused commit messages.
+- Push changes to feature branches, not directly to main.
+
+## Goal Alignment & Safeguards
 
 Before starting any new project or building any automation in or from this repository, confirm it clearly serves one of Monti's broader goals — DBR engineering business goals, Wise AI Partners (automation/AI) goals, Sagemont Congregation service goals, or another personal goal he's stated — and check that it doesn't conflict with or work against the others (e.g. an automation that saves time on one front but creates risk or extra burden on another). If the linkage isn't clear, ask before building.
 
-### Updating This File
+## Updating This File
 
-As the project grows, update this CLAUDE.md with:
-
-- **Build commands**: How to build, test, lint, and run the project
-- **Architecture**: Key directories, modules, and their responsibilities
-- **Dependencies**: Core libraries and frameworks used
-- **Testing**: How to run tests, testing conventions, and coverage requirements
-- **Code style**: Formatting rules, linting configuration, and naming conventions
-- **Common patterns**: Architectural patterns and idioms used in the codebase
+When a new recurring task type shows up, add a routing line above pointing to the skill (or new file) that should handle it — don't inline the instructions here.
