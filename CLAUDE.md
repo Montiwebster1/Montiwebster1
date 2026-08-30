@@ -31,6 +31,10 @@ Montiwebster1/
 - Keep commits focused and atomic
 - Push changes to feature branches, not directly to main
 
+### Goal Alignment & Safeguards
+
+Before starting any new project or building any automation in or from this repository, confirm it clearly serves one of Monti's broader goals — DBR engineering business goals, Wise AI Partners (automation/AI) goals, Sagemont Congregation service goals, or another personal goal he's stated — and check that it doesn't conflict with or work against the others (e.g. an automation that saves time on one front but creates risk or extra burden on another). If the linkage isn't clear, ask before building.
+
 ### Updating This File
 
 As the project grows, update this CLAUDE.md with:
