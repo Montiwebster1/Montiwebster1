@@ -13,9 +13,19 @@ This repository is in its initial state. As the project develops, this file shou
 
 ```
 Montiwebster1/
-├── CLAUDE.md          # AI assistant guidance (this file)
-└── .git/              # Git configuration
+├── CLAUDE.md                          # AI assistant guidance (this file)
+├── scripts/
+│   └── extract_subtitles.sh           # yt-dlp wrapper: pull subtitles for a YouTube URL
+└── .git/                              # Git configuration
 ```
+
+### Scripts
+
+- **`scripts/extract_subtitles.sh <youtube-url> [output-dir] [sub-langs]`** — Wraps
+  `yt-dlp` to download manual + auto-generated subtitles (VTT) for a video without
+  downloading the video itself. Requires `yt-dlp` on PATH (`pip install -U yt-dlp`).
+  Serves Wise AI Partners automation work (e.g. pulling transcripts for content/AI
+  pipelines).
 
 ## Development Guidelines
 
